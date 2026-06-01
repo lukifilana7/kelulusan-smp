@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
   <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <base target="_top">
     <title>Portal Kelulusan SMP</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght=400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
     <style>
@@ -31,7 +33,7 @@
          HEADER DENGAN FOTO BACKGROUND & TEXT SHADOW
          ========================================== */
       .header { 
-        background: linear-gradient(rgba(30, 58, 138, 0.5), rgba(30, 58, 138, 0.4)), url('https://lh3.googleusercontent.com/d/1JFBq_hKWfT6VqPmoKAFBtf9d5nLP2jUw'); 
+        background: linear-gradient(rgba(30, 58, 138, 0.5), rgba(30, 58, 138, 0.4)), url('https://picsum.photos/480/300'); 
         background-size: cover; 
         background-position: center;
         color: #ffffff; padding: 40px 20px 30px; text-align: center; 
@@ -99,20 +101,14 @@
       }
       
       /* ==========================================
-         MODAL & TEMA KELULUSAN (RAMAH HP - LEBIH RINGKAS)
+         MODAL & TEMA KELULUSAN (BIRU MODERN)
          ========================================== */
       .modal-backdrop { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(10px); z-index: 9990; }
-      .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000; justify-content: center; align-items: center; padding: 15px; pointer-events: none; }
+      .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000; justify-content: center; align-items: center; padding: 20px; pointer-events: none; }
+      .modal-content { background: #ffffff; width: 100%; max-width: 480px; border-radius: 28px; padding: 40px 30px; text-align: center; position: relative; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); animation: modalPopUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); pointer-events: auto; }
+      @keyframes modalPopUp { from { opacity: 0; transform: scale(0.8) translateY(30px); } to { opacity: 1; transform: scale(1) translateY(0); } }
       
-      /* Diperkecil max-width & padding agar tidak kepotong layar HP */
-      .modal-content { 
-        background: #ffffff; width: 100%; max-width: 440px; border-radius: 24px; padding: 25px 20px; 
-        text-align: center; position: relative; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4); 
-        animation: modalPopUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); pointer-events: auto; 
-      }
-      @keyframes modalPopUp { from { opacity: 0; transform: scale(0.8) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
-      
-      .close-btn { position: absolute; top: 15px; right: 20px; font-size: 28px; font-weight: 400; color: #94a3b8; cursor: pointer; transition: all 0.2s; line-height: 1; }
+      .close-btn { position: absolute; top: 20px; right: 25px; font-size: 32px; font-weight: 400; color: #94a3b8; cursor: pointer; transition: all 0.2s; line-height: 1; }
       .close-btn:hover { color: #0f172a; transform: rotate(90deg); }
       
       .lulus-theme { background-color: #f0f4ff; border-top: 8px solid #2563eb; }
@@ -123,15 +119,14 @@
       
       .error-theme { background-color: #ffffff; border-top: 8px solid #f59e0b; }
       
-      .status-title { font-size: 28px; font-weight: 800; margin: 2px 0; letter-spacing: 0.5px; }
+      .status-title { font-size: 34px; font-weight: 800; margin: 5px 0; letter-spacing: 0.5px; }
       
-      /* Ukuran tabel diperpadat sedikit agar hemat baris */
-      .data-table { width: 100%; margin-top: 15px; margin-bottom: 15px; border-collapse: separate; border-spacing: 0; text-align: left; background: #ffffff; border-radius: 14px; overflow: hidden; border: 1px solid #e2e8f0; }
-      .data-table td { padding: 10px 14px; font-size: 13.5px; border-bottom: 1px solid #e2e8f0; color: #334155; }
+      .data-table { width: 100%; margin-top: 20px; border-collapse: separate; border-spacing: 0; text-align: left; background: #ffffff; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; }
+      .data-table td { padding: 14px 16px; font-size: 14px; border-bottom: 1px solid #e2e8f0; color: #334155; }
       .data-table tr:last-child td { border-bottom: none; }
-      .data-table td:first-child { font-weight: 600; width: 115px; color: #64748b; background: #f8fafc; }
+      .data-table td:first-child { font-weight: 600; width: 130px; color: #64748b; background: #f1f5f9; }
       
-      .nilai-badge { background: #2563eb; color: white; padding: 4px 10px; border-radius: 8px; font-weight: 700; font-size: 14px; box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2); }
+      .nilai-badge { background: #2563eb; color: white; padding: 6px 12px; border-radius: 8px; font-weight: 700; font-size: 15px; box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2); }
       
       #loading { display: none; margin-top: 25px; text-align: center; }
       .spinner { width: 45px; height: 45px; border: 4px solid #f1f5f9; border-top: 4px solid #2563eb; border-radius: 50%; animation: spin 1s cubic-bezier(0.4, 0, 0.2, 1) infinite; margin: 0 auto 12px; }
@@ -143,7 +138,7 @@
 
     <div class="wrapper">
       <div class="header">
-        <img src="https://lh3.googleusercontent.com/d/1HxkJST_1SIpIfV4flZgOnawrC9skNk_S" alt="Logo" class="logo-sekolah" id="logo-rahasia">
+        <img src="https://picsum.photos/100/100" alt="Logo" class="logo-sekolah" id="logo-rahasia">
         <h2>Portal Kelulusan</h2>
         <h2>SMP DIRGAHAYU KEDUNGADEM</h2>
         <p>Tahun Ajaran 2025/2026</p>
@@ -200,6 +195,9 @@
     </div>
 
     <script>
+      // ⚠️ GANTI DI BAWAH INI DENGAN URL WEB APP GOOGLE APPS SCRIPT ANDA YANG BARU (AKHIRAN /exec)
+      var urlAPI = "https://script.google.com/macros/s/AKfycbxxxxxxxxx_xxxxxxxxx/exec"; 
+
       var intervalConfettiUnlimited;
 
       // Auto-generate tanggal dan tahun
@@ -218,7 +216,7 @@
       var waktuBuka = new Date(2026, 5, 2, 11, 0, 0).getTime(); 
       var x = setInterval(function() {
         var sekarang = new Date().getTime();
-        var selisih = waktuBuka - sekarang;
+        var selisih = waktuBuka - sewing;
         var hari = Math.floor(selisih / (1000 * 60 * 60 * 24));
         var jam = Math.floor((selisih % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         var menit = Math.floor((selisih % (1000 * 60 * 60)) / (1000 * 60));
@@ -240,44 +238,61 @@
         f.style.display = f.style.display === 'none' ? 'block' : 'none';
       }
 
+      // INTEGRASI FETCH API UNTUK LOGIN ADMIN DARI GITHUB
       function prosesLoginAdmin() {
         var p = document.getElementById('passAdmin').value;
         if (!p) return alert("Masukkan password terlebih dahulu!");
-        google.script.run.withSuccessHandler(function(res){
-          if(res.success) { alert("Login Berhasil! Sistem Terbuka."); document.getElementById('passAdmin').value = ''; bukaSistem(); } 
-          else { alert(res.message); }
-        }).cekLoginAdmin(p);
+        
+        fetch(urlAPI, {
+          method: "POST",
+          body: JSON.stringify({ tipe: "loginAdmin", password: p })
+        })
+        .then(response => response.json())
+        .then(res => {
+          if(res.success) { 
+            alert("Login Berhasil! Sistem Terbuka."); 
+            document.getElementById('passAdmin').value = ''; 
+            bukaSistem(); 
+          } else { 
+            alert(res.message); 
+          }
+        })
+        .catch(err => {
+          alert("Koneksi gagal atau database belum di-deploy.");
+          console.error(err);
+        });
       }
 
+      // INTEGRASI FETCH API UNTUK PENCARIAN SISWA DARI GITHUB
       function prosesCek() {
-  var nama = document.getElementById('namaSiswa').value;
-  var tgl = document.getElementById('tglLahir').value;
-  var bln = document.getElementById('blnLahir').value;
-  var thn = document.getElementById('thnLahir').value;
-  
-  if (!nama || !tgl || !bln || !thn) return alert("Mohon lengkapi Nama dan Tanggal Lahir Anda secara penuh!");
-  
-  document.getElementById('loading').style.display = "block";
-  if (intervalConfettiUnlimited) clearInterval(intervalConfettiUnlimited);
-  
-  // ⚠️ GANTI URL DI BAWAH INI DENGAN URL WEB APP GOOGLE SCRIPT KAMU NANTI (Langkah 3)
-  var urlAPI = "https://script.google.com/macros/s/AKfycby0t_mO6WtwtjJF0_GRqQoLOPLcujCNY7lLglOy8FDbfwBDyKPigaTOTWfnwh5Gf_bc/exec"; 
-  
-  fetch(urlAPI, {
-    method: "POST",
-    body: JSON.stringify({ nama: nama, tgl: tgl, bln: bln, thn: thn })
-  })
-  .then(response => response.json())
-  .then(res => {
-    tampilkanHasil(res);
-  })
-  .catch(err => {
-    document.getElementById('loading').style.display = "none";
-    alert("Gagal terhubung dengan server database kelulusan.");
-    console.error(err);
-  });
-}
+        var nama = document.getElementById('namaSiswa').value;
+        var tgl = document.getElementById('tglLahir').value;
+        var bln = document.getElementById('blnLahir').value;
+        var thn = document.getElementById('thnLahir').value;
+        
+        if (!nama || !tgl || !bln || !thn) return alert("Mohon lengkapi Nama dan Tanggal Lahir Anda secara penuh!");
+        
+        document.getElementById('loading').style.display = "block";
+        if (intervalConfettiUnlimited) clearInterval(intervalConfettiUnlimited);
+        
+        fetch(urlAPI, {
+          method: "POST",
+          body: JSON.stringify({ tipe: "cariSiswa", nama: nama, tgl: tgl, bln: bln, thn: thn })
+        })
+        .then(response => response.json())
+        .then(res => {
+          tampilkanHasil(res);
+        })
+        .catch(err => {
+          document.getElementById('loading').style.display = "none";
+          alert("Gagal memuat data dari database sekolah.");
+          console.error(err);
+        });
+      }
 
+      // ==========================================
+      // SELEBRASI CONFETTI: WARNA BIRU & EMAS
+      // ==========================================
       function tembakConfettiSatuDetik() {
         var durasi = 1000;
         var akhir = Date.now() + durasi;
@@ -297,7 +312,9 @@
         }, 10000); 
       }
 
-      // LOGIKA RE-LAYOUT MODAL HASIL (MENJADI SANGAT RINGKAS)
+      // ==========================================
+      // LOGIKA UTAMA TAMPILAN MODAL HASIL SISWA
+      // ==========================================
       function tampilkanHasil(res) {
         var backdrop = document.getElementById('modalBackdrop');
         var modal = document.getElementById('resultModal');
@@ -315,53 +332,50 @@
             mulaiLoopSelebrasi();
 
             box.innerHTML = `
-              <div style="font-size: 42px; margin-bottom: 2px; animation: bounce 1s infinite;">🎓</div>
+              <div style="font-size: 50px; margin-bottom: 5px; animation: bounce 1s infinite;">🎓</div>
               <div class="status-title">SELAMAT!</div>
-              <p style="font-size: 14px; font-weight: 600; color: #1e3a8a; margin-bottom: 12px;">
-                Anda Dinyatakan <span style="background:#2563eb; color:white; padding:2px 8px; border-radius:5px; font-weight:700;">LULUS</span>
+              <p style="font-size: 16px; font-weight: 600; color: #1e3a8a; margin-bottom: 15px;">
+                Anda Dinyatakan <span style="background:#2563eb; color:white; padding:2px 8px; border-radius:5px;">LULUS</span>
               </p>
               
+              <div style="background: #eff6ff; border-left: 4px solid #2563eb; padding: 12px; margin-bottom: 20px; border-radius: 8px; text-align: left; font-size: 13px; line-height: 1.5; color: #1e40af;">
+                <strong>Pesan Kelulusan:</strong><br>
+                Selamat atas keberhasilanmu! Perjuangan selama 3 tahun telah membuahkan hasil. Tetaplah rendah hati, ekspresikan rasa syukurmu bersama orang tua di rumah. 
+                <br><br>
+                <strong style="color: #b91c1c;">⚠️ HIMBAUAN PENTING:</strong><br>
+                Dilarang keras melakukan aksi konvoi di jalanan, corat-coret seragam, atau tindakan eforia berlebihan. Salurkan baju seragam layak pakaimu untuk adik kelas atau yang membutuhkan.
+              </div>
+
               <table class="data-table">
                 <tr><td>Nama Siswa</td><td>: <strong>${res.nama}</strong></td></tr>
                 <tr><td>NISN</td><td>: ${res.nisn}</td></tr>
                 <tr><td>Tanggal Lahir</td><td>: ${res.ttl}</td></tr>
-                <tr><td>Nilai Rata</td><td>: <span class="nilai-badge" style="padding:3px 8px; font-size:13px;">${res.nilai}</span></td></tr>
+                <tr><td>Nilai Rata-Rata</td><td>: <span class="nilai-badge">${res.nilai}</span></td></tr>
               </table>
               
-              <div style="background: #eff6ff; border-left: 4px solid #2563eb; padding: 10px; border-radius: 8px; text-align: left; font-size: 11.5px; line-height: 1.4; color: #1e40af; margin-bottom: 12px;">
-                <strong>💡 Informasi & Himbauan Sekolah:</strong><br>
-                Selamat atas kelulusanmu! Ekspresikan rasa syukur bersama orang tua di rumah. 
-                <span style="color: #b91c1c; font-weight: 600;">Dilarang keras melakukan aksi konvoi di jalanan atau corat-coret seragam.</span> 
-                Silakan donasikan seragam layak pakai Anda ke pihak yang membutuhkan.
-              </div>
-
-              <p style="font-size: 11px; color: #64748b; font-style: italic;">
+              <p style="font-size: 12px; color: #64748b; font-style: italic; margin-top: 15px;">
                 "Masa depan adalah milik mereka yang percaya pada keindahan impian mereka."
               </p>
             `;
           } else {
             card.classList.add("tidak-lulus-theme");
             box.innerHTML = `
-              <div style="font-size: 36px; margin-bottom: 5px;">📋</div>
-              <div class="status-title" style="color: #ef4444;">${res.status}</div>
-              <p style="font-size:13px; font-weight:500; margin-bottom:12px; color: #64748b;">${res.keterangan}</p>
-              
+              <div style="font-size:12px; font-weight:600; opacity:0.8; margin-bottom:5px;">HASIL EVALUASI</div>
+              <div class="status-title">${res.status}</div>
+              <p style="font-size:14px; font-weight:500;">${res.keterangan}</p>
               <table class="data-table">
-                <tr><td>Nama Siswa</td><td>: <strong>${res.nama}</strong></td></tr>
+                <tr><td>Nama Siswa</td><td>: ${res.nama}</td></tr>
                 <tr><td>NISN</td><td>: ${res.nisn}</td></tr>
                 <tr><td>Tanggal Lahir</td><td>: ${res.ttl}</td></tr>
-                <tr><td>Nilai Rata</td><td>: <span class="nilai-badge" style="padding: 3px 8px; font-size: 13px; background: #ef4444;">${res.nilai}</span></td></tr>
-              </table>
-            `;
+                <tr><td>Nilai Rata-Rata</td><td>: <span class="nilai-badge">${res.nilai}</span></td></tr>
+              </table>`;
           }
         } else {
           card.classList.add("error-theme");
           box.innerHTML = `
-            <div style="font-size:36px; margin-bottom:5px;">⚠️</div>
-            <strong style="font-size:16px; color: #b45309;">Data Tidak Ditemukan</strong>
-            <p style="font-size:12.5px; color: #64748b; margin-top:8px; line-height: 1.4;">
-              Pastikan ejaan Nama dan kombinasi Tanggal Lahir sudah tepat sesuai dokumen asli sekolah.
-            </p>
+            <div style="font-size:40px; margin-bottom:10px;">⚠️</div>
+            <strong style="font-size:18px;">Data Tidak Ditemukan</strong><br><br>
+            <p style="font-size:14px; opacity:0.9;">Pastikan ejaan Nama dan kombinasi Tanggal Lahir sudah tepat sesuai dokumen asli.</p>
           `;
         }
         
