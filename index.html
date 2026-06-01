@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <title>Portal Kelulusan SMP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <style>
+      /* ==========================================
+         BASE & GLASSMORPHISM LAYOUT
+         ========================================== */
+      * { box-sizing: border-box; font-family: 'Poppins', sans-serif; margin: 0; padding: 0; }
+      
+      body { 
+        background: linear-gradient(135deg, #f0f4ff 0%, #d9e2fc 100%); 
+        display: flex; flex-direction: column; align-items: center; justify-content: center; 
+        min-height: 100vh; padding: 20px; color: #1e293b;
+      }
+      
+      .wrapper { 
+        background: rgba(255, 255, 255, 0.95); 
+        backdrop-filter: blur(10px);
+        width: 100%; max-width: 480px; 
+        border-radius: 28px; 
+        box-shadow: 0 25px 50px -12px rgba(0,0,0,0.1); 
+        overflow: hidden; 
+      }
+      
+      /* ==========================================
+         HEADER DENGAN FOTO BACKGROUND & TEXT SHADOW
+         ========================================== */
+      .header { 
+        background: linear-gradient(rgba(30, 58, 138, 0.5), rgba(30, 58, 138, 0.4)), url('https://lh3.googleusercontent.com/d/1JFBq_hKWfT6VqPmoKAFBtf9d5nLP2jUw'); 
+        background-size: cover; 
+        background-position: center;
+        color: #ffffff; padding: 40px 20px 30px; text-align: center; 
+        position: relative; border-bottom: 4px solid #60a5fa;
+      }
+      .logo-sekolah { 
+        width: 90px; height: auto; margin-bottom: 15px; 
+        filter: drop-shadow(0px 8px 12px rgba(0,0,0,0.3)); 
+        cursor: pointer; transition: transform 0.4s; 
+      }
+      .logo-sekolah:hover { transform: scale(1.1) rotate(5deg); }
+      
+      .header h2 { 
+        font-size: 21px; 
+        font-weight: 800; 
+        text-transform: uppercase; 
+        letter-spacing: 0.5px; 
+        line-height: 1.4;
+        text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.9);
+      }
+      .header p { 
+        font-size: 14px; 
+        font-weight: 600; 
+        color: #ffffff; 
+        opacity: 1; 
+        margin-top: 10px; 
+        letter-spacing: 1px;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.9);
+      }
+      
+      /* ==========================================
+         AREA KONTEN & FORMULIR (BACKGROUND ABU-ABU)
+         ========================================== */
+      .content { padding: 40px 30px; background-color: #f8fafc; }
+      label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 13px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
+      
+      input[type="text"], input[type="password"], select { 
+        width: 100%; padding: 15px 18px; border: 2px solid #cbd5e1; 
+        border-radius: 14px; font-size: 15px; margin-bottom: 24px; 
+        background: #ffffff; color: #0f172a; text-align: center;
+        transition: all 0.3s; outline: none; font-weight: 500;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      }
+      input[type="text"]:focus, select:focus { 
+        border-color: #3b82f6; 
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15); transform: translateY(-2px); 
+      }
+      
+      .tgl-group { display: flex; gap: 12px; margin-bottom: 24px; }
+      .tgl-group select { margin-bottom: 0; cursor: pointer; padding: 14px; }
+      
+      button { 
+        width: 100%; background: linear-gradient(135deg, #2563eb, #1d4ed8); 
+        color: white; border: none; padding: 18px; font-size: 16px; 
+        font-weight: 700; letter-spacing: 1px; border-radius: 14px; 
+        cursor: pointer; transition: all 0.2s ease; box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.4);
+      }
+      button:hover { transform: translateY(-3px); box-shadow: 0 15px 25px -5px rgba(37, 99, 235, 0.5); }
+      button:active { transform: translateY(2px); box-shadow: 0 5px 10px -5px rgba(37, 99, 235, 0.4); }
+      
+      #timer { 
+        background: #ffffff; padding: 20px; border-radius: 18px; 
+        border: 2px solid #e2e8f0; font-size: 32px; font-weight: 800; 
+        color: #2563eb; margin: 15px 0; letter-spacing: 2px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+      }
+      
+      /* ==========================================
+         MODAL & TEMA KELULUSAN (RAMAH HP - LEBIH RINGKAS)
+         ========================================== */
+      .modal-backdrop { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(10px); z-index: 9990; }
+      .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000; justify-content: center; align-items: center; padding: 15px; pointer-events: none; }
+      
+      /* Diperkecil max-width & padding agar tidak kepotong layar HP */
+      .modal-content { 
+        background: #ffffff; width: 100%; max-width: 440px; border-radius: 24px; padding: 25px 20px; 
+        text-align: center; position: relative; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4); 
+        animation: modalPopUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); pointer-events: auto; 
+      }
+      @keyframes modalPopUp { from { opacity: 0; transform: scale(0.8) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+      
+      .close-btn { position: absolute; top: 15px; right: 20px; font-size: 28px; font-weight: 400; color: #94a3b8; cursor: pointer; transition: all 0.2s; line-height: 1; }
+      .close-btn:hover { color: #0f172a; transform: rotate(90deg); }
+      
+      .lulus-theme { background-color: #f0f4ff; border-top: 8px solid #2563eb; }
+      .lulus-theme .status-title { color: #1e3a8a; }
+      
+      .tidak-lulus-theme { background-color: #ffffff; border-top: 8px solid #ef4444; }
+      .tidak-lulus-theme .status-title { color: #ef4444; }
+      
+      .error-theme { background-color: #ffffff; border-top: 8px solid #f59e0b; }
+      
+      .status-title { font-size: 28px; font-weight: 800; margin: 2px 0; letter-spacing: 0.5px; }
+      
+      /* Ukuran tabel diperpadat sedikit agar hemat baris */
+      .data-table { width: 100%; margin-top: 15px; margin-bottom: 15px; border-collapse: separate; border-spacing: 0; text-align: left; background: #ffffff; border-radius: 14px; overflow: hidden; border: 1px solid #e2e8f0; }
+      .data-table td { padding: 10px 14px; font-size: 13.5px; border-bottom: 1px solid #e2e8f0; color: #334155; }
+      .data-table tr:last-child td { border-bottom: none; }
+      .data-table td:first-child { font-weight: 600; width: 115px; color: #64748b; background: #f8fafc; }
+      
+      .nilai-badge { background: #2563eb; color: white; padding: 4px 10px; border-radius: 8px; font-weight: 700; font-size: 14px; box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2); }
+      
+      #loading { display: none; margin-top: 25px; text-align: center; }
+      .spinner { width: 45px; height: 45px; border: 4px solid #f1f5f9; border-top: 4px solid #2563eb; border-radius: 50%; animation: spin 1s cubic-bezier(0.4, 0, 0.2, 1) infinite; margin: 0 auto 12px; }
+      @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+      @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    </style>
+  </head>
+  <body>
+
+    <div class="wrapper">
+      <div class="header">
+        <img src="https://lh3.googleusercontent.com/d/1HxkJST_1SIpIfV4flZgOnawrC9skNk_S" alt="Logo" class="logo-sekolah" id="logo-rahasia">
+        <h2>Portal Kelulusan</h2>
+        <h2>SMP DIRGAHAYU KEDUNGADEM</h2>
+        <p>Tahun Ajaran 2025/2026</p>
+      </div>
+      
+      <div class="content">
+        <div id="countdown-box" style="text-align: center;">
+          <p style="font-weight: 600; font-size: 14px; color: #3b82f6; letter-spacing: 1px;">PENGUMUMAN DIBUKA DALAM</p>
+          <div id="timer">00:00:00:00</div>
+          <p style="font-size: 12px; color: #64748b; font-weight: 500;">Hari : Jam : Menit : Detik</p>
+        </div>
+
+        <div id="search-box" style="display: none;">
+          <label>NAMA LENGKAP SISWA</label>
+          <input type="text" id="namaSiswa" placeholder="Ketik Nama Sesuai Ijazah" autocomplete="off">
+          
+          <label>TANGGAL LAHIR (Validasi Keamanan)</label>
+          <div class="tgl-group">
+            <select id="tglLahir" style="flex: 1;"><option value="">Tgl</option></select>
+            <select id="blnLahir" style="flex: 1.5;">
+              <option value="">Bulan</option>
+              <option value="Januari">Januari</option><option value="Februari">Februari</option><option value="Maret">Maret</option>
+              <option value="April">April</option><option value="Mei">Mei</option><option value="Juni">Juni</option>
+              <option value="Juli">Juli</option><option value="Agustus">Agustus</option><option value="September">September</option>
+              <option value="Oktober">Oktober</option><option value="November">November</option><option value="Desember">Desember</option>
+            </select>
+            <select id="thnLahir" style="flex: 1;"><option value="">Tahun</option></select>
+          </div>
+          
+          <button onclick="prosesCek()">LIHAT HASIL KELULUSAN</button>
+        </div>
+        
+        <div id="loading">
+          <div class="spinner"></div>
+          <div style="font-size: 14px; color: #64748b; font-weight: 500;">Mencari data siswa...</div>
+        </div>
+
+        <div style="text-align: center; margin-top: 10px;">
+          <div id="admin-form" style="display:none; margin-top: 20px; background: #ffffff; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0;">
+            <label style="text-align: left; margin-bottom: 10px;">Akses Panitia</label>
+            <input type="password" id="passAdmin" placeholder="Password Admin">
+            <button onclick="prosesLoginAdmin()" style="background: #475569; box-shadow: none;">Buka Sistem</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="modalBackdrop" class="modal-backdrop"></div>
+    <div id="resultModal" class="modal-overlay">
+      <div id="modalCard" class="modal-content">
+        <span class="close-btn" onclick="tutupModal()">×</span>
+        <div id="hasil"></div>
+      </div>
+    </div>
+
+    <script>
+      var intervalConfettiUnlimited;
+
+      // Auto-generate tanggal dan tahun
+      window.onload = function() {
+        var tglSelect = document.getElementById("tglLahir");
+        for(var i = 1; i <= 31; i++) {
+          var opt = document.createElement("option"); opt.value = i; opt.innerHTML = i; tglSelect.appendChild(opt);
+        }
+        var thnSelect = document.getElementById("thnLahir");
+        for(var j = 2005; j <= 2015; j++) {
+          var opt = document.createElement("option"); opt.value = j; opt.innerHTML = j; thnSelect.appendChild(opt);
+        }
+      };
+
+      // Waktu Hitung Mundur (Diatur ke: 2 Juni 2026, 11:00:00)
+      var waktuBuka = new Date(2026, 5, 2, 11, 0, 0).getTime(); 
+      var x = setInterval(function() {
+        var sekarang = new Date().getTime();
+        var selisih = waktuBuka - sekarang;
+        var hari = Math.floor(selisih / (1000 * 60 * 60 * 24));
+        var jam = Math.floor((selisih % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var menit = Math.floor((selisih % (1000 * 60 * 60)) / (1000 * 60));
+        var detik = Math.floor((selisih % (1000 * 60)) / 1000);
+
+        document.getElementById("timer").innerHTML = (hari < 10 ? "0"+hari : hari) + ":" + (jam < 10 ? "0"+jam : jam) + ":" + (menit < 10 ? "0"+menit : menit) + ":" + (detik < 10 ? "0"+detik : detik);
+        if (selisih < 0) { bukaSistem(); }
+      }, 1000);
+
+      function bukaSistem() {
+        clearInterval(x);
+        document.getElementById("countdown-box").style.display = "none";
+        document.getElementById("search-box").style.display = "block";
+        document.getElementById("admin-form").style.display = "none";
+      }
+
+      function toggleAdminForm() {
+        var f = document.getElementById('admin-form');
+        f.style.display = f.style.display === 'none' ? 'block' : 'none';
+      }
+
+      function prosesLoginAdmin() {
+        var p = document.getElementById('passAdmin').value;
+        if (!p) return alert("Masukkan password terlebih dahulu!");
+        google.script.run.withSuccessHandler(function(res){
+          if(res.success) { alert("Login Berhasil! Sistem Terbuka."); document.getElementById('passAdmin').value = ''; bukaSistem(); } 
+          else { alert(res.message); }
+        }).cekLoginAdmin(p);
+      }
+
+      function prosesCek() {
+  var nama = document.getElementById('namaSiswa').value;
+  var tgl = document.getElementById('tglLahir').value;
+  var bln = document.getElementById('blnLahir').value;
+  var thn = document.getElementById('thnLahir').value;
+  
+  if (!nama || !tgl || !bln || !thn) return alert("Mohon lengkapi Nama dan Tanggal Lahir Anda secara penuh!");
+  
+  document.getElementById('loading').style.display = "block";
+  if (intervalConfettiUnlimited) clearInterval(intervalConfettiUnlimited);
+  
+  // ⚠️ GANTI URL DI BAWAH INI DENGAN URL WEB APP GOOGLE SCRIPT KAMU NANTI (Langkah 3)
+  var urlAPI = "https://script.google.com/macros/s/AKfycby0t_mO6WtwtjJF0_GRqQoLOPLcujCNY7lLglOy8FDbfwBDyKPigaTOTWfnwh5Gf_bc/exec"; 
+  
+  fetch(urlAPI, {
+    method: "POST",
+    body: JSON.stringify({ nama: nama, tgl: tgl, bln: bln, thn: thn })
+  })
+  .then(response => response.json())
+  .then(res => {
+    tampilkanHasil(res);
+  })
+  .catch(err => {
+    document.getElementById('loading').style.display = "none";
+    alert("Gagal terhubung dengan server database kelulusan.");
+    console.error(err);
+  });
+}
+
+      function tembakConfettiSatuDetik() {
+        var durasi = 1000;
+        var akhir = Date.now() + durasi;
+
+        (function frame() {
+          confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0, y: 1 }, colors: ['#2563eb', '#1e3a8a', '#60a5fa', '#ffd700'], zIndex: 10005 });
+          confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1, y: 1 }, colors: ['#2563eb', '#1e3a8a', '#60a5fa', '#ffd700'], zIndex: 10005 });
+
+          if (Date.now() < akhir) requestAnimationFrame(frame);
+        }());
+      }
+
+      function mulaiLoopSelebrasi() {
+        tembakConfettiSatuDetik(); 
+        intervalConfettiUnlimited = setInterval(function() {
+          tembakConfettiSatuDetik();
+        }, 10000); 
+      }
+
+      // LOGIKA RE-LAYOUT MODAL HASIL (MENJADI SANGAT RINGKAS)
+      function tampilkanHasil(res) {
+        var backdrop = document.getElementById('modalBackdrop');
+        var modal = document.getElementById('resultModal');
+        var card = document.getElementById('modalCard');
+        var box = document.getElementById('hasil');
+        
+        document.getElementById('loading').style.display = "none";
+        card.className = "modal-content";
+
+        if (res.ditemukan) {
+          var lulus = res.status.toUpperCase() === "LULUS";
+          
+          if (lulus) {
+            card.classList.add("lulus-theme");
+            mulaiLoopSelebrasi();
+
+            box.innerHTML = `
+              <div style="font-size: 42px; margin-bottom: 2px; animation: bounce 1s infinite;">🎓</div>
+              <div class="status-title">SELAMAT!</div>
+              <p style="font-size: 14px; font-weight: 600; color: #1e3a8a; margin-bottom: 12px;">
+                Anda Dinyatakan <span style="background:#2563eb; color:white; padding:2px 8px; border-radius:5px; font-weight:700;">LULUS</span>
+              </p>
+              
+              <table class="data-table">
+                <tr><td>Nama Siswa</td><td>: <strong>${res.nama}</strong></td></tr>
+                <tr><td>NISN</td><td>: ${res.nisn}</td></tr>
+                <tr><td>Tanggal Lahir</td><td>: ${res.ttl}</td></tr>
+                <tr><td>Nilai Rata</td><td>: <span class="nilai-badge" style="padding:3px 8px; font-size:13px;">${res.nilai}</span></td></tr>
+              </table>
+              
+              <div style="background: #eff6ff; border-left: 4px solid #2563eb; padding: 10px; border-radius: 8px; text-align: left; font-size: 11.5px; line-height: 1.4; color: #1e40af; margin-bottom: 12px;">
+                <strong>💡 Informasi & Himbauan Sekolah:</strong><br>
+                Selamat atas kelulusanmu! Ekspresikan rasa syukur bersama orang tua di rumah. 
+                <span style="color: #b91c1c; font-weight: 600;">Dilarang keras melakukan aksi konvoi di jalanan atau corat-coret seragam.</span> 
+                Silakan donasikan seragam layak pakai Anda ke pihak yang membutuhkan.
+              </div>
+
+              <p style="font-size: 11px; color: #64748b; font-style: italic;">
+                "Masa depan adalah milik mereka yang percaya pada keindahan impian mereka."
+              </p>
+            `;
+          } else {
+            card.classList.add("tidak-lulus-theme");
+            box.innerHTML = `
+              <div style="font-size: 36px; margin-bottom: 5px;">📋</div>
+              <div class="status-title" style="color: #ef4444;">${res.status}</div>
+              <p style="font-size:13px; font-weight:500; margin-bottom:12px; color: #64748b;">${res.keterangan}</p>
+              
+              <table class="data-table">
+                <tr><td>Nama Siswa</td><td>: <strong>${res.nama}</strong></td></tr>
+                <tr><td>NISN</td><td>: ${res.nisn}</td></tr>
+                <tr><td>Tanggal Lahir</td><td>: ${res.ttl}</td></tr>
+                <tr><td>Nilai Rata</td><td>: <span class="nilai-badge" style="padding: 3px 8px; font-size: 13px; background: #ef4444;">${res.nilai}</span></td></tr>
+              </table>
+            `;
+          }
+        } else {
+          card.classList.add("error-theme");
+          box.innerHTML = `
+            <div style="font-size:36px; margin-bottom:5px;">⚠️</div>
+            <strong style="font-size:16px; color: #b45309;">Data Tidak Ditemukan</strong>
+            <p style="font-size:12.5px; color: #64748b; margin-top:8px; line-height: 1.4;">
+              Pastikan ejaan Nama dan kombinasi Tanggal Lahir sudah tepat sesuai dokumen asli sekolah.
+            </p>
+          `;
+        }
+        
+        backdrop.style.display = "block";
+        modal.style.display = "flex";
+      }
+
+      function tutupModal() {
+        document.getElementById('modalBackdrop').style.display = "none";
+        document.getElementById('resultModal').style.display = "none";
+        if (intervalConfettiUnlimited) clearInterval(intervalConfettiUnlimited);
+      }
+
+      var klikAdmin = 0;
+      var waktuKlikTerakhir = 0;
+      document.getElementById("logo-rahasia").addEventListener("click", function() {
+        var waktuSekarang = new Date().getTime();
+        if (waktuSekarang - waktuKlikTerakhir > 2000) klikAdmin = 0;
+        klikAdmin++;
+        waktuKlikTerakhir = waktuSekarang;
+        if (klikAdmin === 5) { toggleAdminForm(); klikAdmin = 0; }
+      });
+    </script>
+  </body>
+</html>
